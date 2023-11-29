@@ -26,7 +26,6 @@ class LoginService:
         with sql.transaction() as session:
             user_exists = session.query(Register).filter(Register.username==username).all()
             if user_exists:
-                reason = user_exists
                 success = True
             else:
                 reason = f'User {username} not found.☹'
