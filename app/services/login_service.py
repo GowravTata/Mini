@@ -29,7 +29,6 @@ class LoginService:
                 success = True
             else:
                 reason = f'User {username} not found.☹'
-                success= False
         return reason, success      
          
     def delete_user(self, username):
@@ -42,7 +41,6 @@ class LoginService:
                     session.execute(statement)
         except Exception as e:
             reason = str(e)
-            success = False
         finally:
            return reason, success
          
