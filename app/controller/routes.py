@@ -1,18 +1,24 @@
-from flask import Flask, request
-from app.services.insert_data import all_tools
+from flask import Blueprint,request
+from flask_restx import Resource, Api
+from app.services.home import Home
+from app.utils.http_response import ApplicationResponse as response
 
-app = Flask(__name__)
-
-
-@app.route('/enter', methods=['POST'])
-def route():
-    data = request.json
-    if 'brand' in data and 'model' in data and 'year' in data:
-        response = all_tools(data=data)
-    else:
-        response = 'More keys are required'
-    return response
+api_blueprint = Blueprint('api',__name__, url_prefix='/home')
+api = Api(api_blueprint)
 
 
-if __name__ == '__main__':
-    app.run(port=5001,debug=True)
+@api.route('/register')
+class RegisterUser(Resource):
+    def post(self):
+        data = request.json
+        if 'username' in data and 'password' in data:
+            home = Home()
+            reason, success = home.register_user(data=data)
+            if success:
+                return response.success('SUCCESS')
+            else:
+                return response.failed(reason)        
+        else:
+            return response.incomplete_param()
+        
+api.add_resource(RegisterUser, '/')

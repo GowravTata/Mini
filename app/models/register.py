@@ -1,6 +1,6 @@
 import configparser
 import os
-from sqlalchemy import Integer, VARCHAR, Column, MetaData
+from sqlalchemy import VARCHAR, Column, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 
@@ -12,30 +12,27 @@ password = config['pgsql']['password']
 host = config['pgsql']['host']
 port = config['pgsql']['port']
 database_name = config['pgsql']['database_name']
+schema = config['pgsql']['schema']
 
 engine = create_engine(f"postgresql://{username}:{password}@{host}:{port}/{database_name}")
 
-schema = 'public'
+schema = schema
 metadata = MetaData(schema=schema)
 Base = declarative_base()
 
 
-class Cars(Base):
-    __tablename__ = 'cars_new_two'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    brand = Column(VARCHAR)
-    model = Column(VARCHAR)
-    year = Column(Integer)
+class Register(Base):
+    __tablename__ = 'register_user'
+    username = Column(VARCHAR, primary_key=True)
+    password = Column(VARCHAR)
 
     def __init__(
             self,
-            brand,
-            model,
-            year
+            username,
+            password,
     ):
-        self.brand = brand
-        self.model = model
-        self.year = year
+        self.username = username
+        self.password = password
 
 
 Base.metadata.create_all(engine)
