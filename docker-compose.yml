@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    container_name: register-app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      # ports:
+      #   -5000:5000
+      # depends_on:
+      #   - postgres
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password

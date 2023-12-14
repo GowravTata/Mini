@@ -24,6 +24,8 @@ class RegisterUser(Resource):
         
     def get(self):
         username =request.args.get('username') 
+        if not username:
+             return response.incomplete_param()
         loginService= LoginService()
         reason, success =loginService.get_user(username)
         if success:
